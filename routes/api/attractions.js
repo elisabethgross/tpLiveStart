@@ -4,6 +4,7 @@ var models = require('../../models');
 var Hotels = require('../../models/hotel');
 var Restaurants = require('../../models/restaurant');
 var Activities = require('../../models/activity');
+var Days = require('../../models/day');
 
 router.get('/hotels', function(req, res, next) {
   Hotels.findAll()

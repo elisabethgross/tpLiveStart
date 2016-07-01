@@ -41,21 +41,49 @@ var daysModule = (function () {
   // jQuery event binding
 
   $(function () {
-    $addButton.on('click', addDay);
-    $removeButton.on('click', deleteCurrentDay);
+    $addButton.on('click', function() {
+      $.post('/api/days')
+      .then(function(newDay) {
+        addDay(newDay.number);
+      });
+    });
+    $removeButton.on('click', function() {
+      console.log(currentDay)
+      $.ajax({
+        method: 'DELETE',
+        url: '/api/days/' + currentDay.number,
+      })
+      .then(function(theDay) {
+        deleteCurrentDay();
+      });
+    });
   });
 
-  function addDay () {
+
+
+  function addDay (num) {
     if (this && this.blur) this.blur(); // removes focus box from buttons
-    var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
+    var newDay = dayModule.create({ number: num }); // dayModule
     days.push(newDay);
+    switchTo(newDay);
     if (days.length === 1) {
       currentDay = newDay;
       switchTo(currentDay);
     }
   }
 
+  $.get('/api/days')
+  .then(function (daysArr) {
+
+    daysArr.forEach(function (day) {
+      // days.push(day);
+      addDay(day.number);
+    });
+
+  });
+
   function deleteCurrentDay () {
+    console.log(days);
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
     // remove from the collection
@@ -73,10 +101,6 @@ var daysModule = (function () {
   // globally accessible module methods
 
   var methods = {
-
-    load: function () {
-      $(addDay);
-    },
 
     switchTo: switchTo,
 

@@ -4,6 +4,8 @@ var Hotel = require('../models/hotel');
 var Restaurant = require('../models/restaurant');
 var Activity = require('../models/activity');
 
+router.use('/api/days', require('./api/days'));
+
 router.use('/api', require('./api/attractions'));
 
 router.get('/', function(req, res, next) {

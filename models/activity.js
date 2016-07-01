@@ -12,4 +12,4 @@ var Activity = db.define('activity', {
   }
 });
 
-module.exports = Activity
+module.exports = Activity;
